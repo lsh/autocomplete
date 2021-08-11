@@ -1,13 +1,22 @@
 const affineTransformGenerator: Fig.Generator = {
   script: function (context) {
-    return `echo ${context}`;
+    return `echo ${context[context.length - 1]}`;
   },
   postProcess: function (transform) {
-    const transforms = ["sx", "rx", "ry", "sy", "tx", "ty"];
+    const transforms = [
+      { name: "sx", description: "scale x" },
+      { name: "rx", description: "shear x" },
+      { name: "ry", description: "shear y" },
+      { name: "sy", description: "scale y" },
+      { name: "tx", description: "translate x in pixels (optional)" },
+      { name: "ty", description: "translate y in pixels (optional)" },
+    ];
     const i = transform.split(",").filter((d) => d).length;
-    return [{ name: transforms[i] }];
+    const { name, description } = transforms[i];
+    return [{ name, description }];
   },
   trigger: ",",
+  getQueryTerm: ",",
 };
 
 const IMAGE_SETTINGS_ICON = "⚙️";
