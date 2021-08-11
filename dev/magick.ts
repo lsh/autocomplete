@@ -72,6 +72,9 @@ const imageSettings = [
 const completionSpec: Fig.Spec = {
   name: "magick",
   description: "",
+  parserDirectives: {
+    flagsArePosixNoncompliant: true,
+  },
   subcommands: [
     {
       name: "convert",
