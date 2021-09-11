@@ -548,93 +548,138 @@ const completionSpec: Fig.Spec = {
         },
         {
           name: "-contrast",
-          description: "enhance or reduce the image contrast.",
+          description: "enhance the image contrast.",
+        },
+        {
+          name: "+contrast",
+          description: "reduce the image contrast.",
         },
         {
           name: "-contrast-stretch",
-          description: "",
-          args: { name: "black-point", description: "" },
+          description:
+            "increase the contrast in an image by stretching the range of intensity values.",
+          args: {
+            name: "black-point%[xwhite-point]%",
+            generators: axbGenerator(
+              { name: "black point %" },
+              { name: "white point %" }
+            ),
+          },
         },
         {
           name: "-convolve",
-          description: "",
-          args: { name: "kernel", description: "" },
+          description:
+            "convolve an image with a user-supplied convolution kernel.",
+          args: {
+            name: "kernel",
+            description:
+              "only odd-dimensioned kernels are supported (eg. 3^2=9, 5^2=25).",
+          },
         },
         {
           name: "-copy",
-          description: "",
-          args: { name: "geometry", description: "" },
+          description: "copy pixels from one area of an image to another.",
+          args: [geometryArg, { name: "offset", description: "" }],
         },
         {
           name: "-crop",
-          description: "",
+          description: "cut out one or more rectangular regions of the image.",
+          // TODO since crop is special
           args: { name: "geometry", description: "" },
         },
         {
           name: "-cycle",
-          description: "",
+          description: "displace image colormap by amount.",
           args: { name: "amount", description: "" },
         },
         {
           name: "-debug",
-          description: "",
-          args: { name: "events", description: "" },
+          description: "enable debug printout.",
+          // TODO: a combination of comma seperated and list generator
+          args: { name: "events" },
+        },
+        {
+          name: "+debug",
+          description: "turn off all logging.",
         },
         {
           name: "-decipher",
-          description: "",
+          description:
+            "decipher and restore pixels that were previously transformed by -encipher.",
           args: { name: "filename", template: "filepaths" },
         },
         {
           name: "-deconstruct",
-          description: "",
+          description: "find areas that has changed between images.",
         },
         {
           name: "-define",
-          description: "",
-          args: { name: "key", description: "" },
+          description:
+            "Add specific global settings generally used to control coders and image processing operations.",
+          args: { name: "key=value", description: "" },
         },
         {
           name: "-delay",
-          description: "",
-          args: { name: "ticks", description: "" },
+          description: "display the next image after pausing.",
+          args: {
+            name: "ticks",
+            generators: axbGenerator(
+              { name: "ticks" },
+              { name: "ticks per second" }
+            ),
+          },
         },
         {
           name: "-delete",
-          description: "",
+          description:
+            "delete the images specified by index, from the image sequence.",
           args: { name: "indexes", description: "" },
         },
         {
+          name: "+delete",
+          description: "delete the last image in the current image sequence.",
+        },
+        {
           name: "-density",
-          description: "",
-          args: { name: "width", description: "" },
+          description:
+            "set the horizontal and vertical resolution of an image for rendering to devices.",
+          args: {
+            name: "width[xheight]",
+            generators: axbGenerator({ name: "width" }, { name: "height" }),
+          },
         },
         {
           name: "-depth",
-          description: "",
+          description: "depth of the image.",
           args: { name: "value", description: "" },
         },
         {
+          name: "+depth",
+          description: "return depth to its default value.",
+        },
+        {
           name: "-descend",
-          description: "",
+          description: "obtain image by descending window hierarchy.",
         },
         {
           name: "-deskew",
-          description: "",
-          args: { name: "threshold{%}", description: "" },
+          description:
+            "Straighten an image. A threshold of 40% works for most images.",
+          args: { name: "threshold %", description: "" },
         },
         {
           name: "-despeckle",
-          description: "",
+          description: "reduce the speckles within an image.",
         },
         {
           name: "-direction",
-          description: "",
+          description:
+            "Render text right-to-left or left-to-right. Requires the RAQM delegate library and complex text layout.",
           args: { name: "type", description: "" },
         },
         {
           name: "-displace",
-          description: "",
+          description: "shift image pixels as defined by a displacement map.",
           args: { name: "horizontal-scale", description: "" },
         },
         {
@@ -660,7 +705,7 @@ const completionSpec: Fig.Spec = {
         {
           name: "-distort",
           description: "",
-          args: { name: "method", description: "" },
+          args: { name: "method", generators: listGenerator("Distort") },
         },
         {
           name: "-distribute-cache",
@@ -705,7 +750,7 @@ const completionSpec: Fig.Spec = {
         {
           name: "-endian",
           description: "",
-          args: { name: "type", description: "" },
+          args: { name: "type", generators: listGenerator("Endian") },
         },
         {
           name: "-enhance",
@@ -718,12 +763,15 @@ const completionSpec: Fig.Spec = {
         {
           name: "-evaluate",
           description: "",
-          args: { name: "operator", description: "" },
+          args: [
+            { name: "operator", generators: listGenerator("Evaluate") },
+            { name: "value" },
+          ],
         },
         {
           name: "-evaluate-sequence",
           description: "",
-          args: { name: "operator", description: "" },
+          args: { name: "operator", generators: listGenerator("Evaluate") },
         },
         {
           name: "-extent",
@@ -754,7 +802,7 @@ const completionSpec: Fig.Spec = {
         {
           name: "-filter",
           description: "",
-          args: { name: "type", description: "" },
+          args: { name: "type", generators: listGenerator("Filter") },
         },
         {
           name: "-flatten",
@@ -770,7 +818,8 @@ const completionSpec: Fig.Spec = {
         {
           name: "-font",
           description: "",
-          args: { name: "name", description: "" },
+          // TODO: needs a custom generator
+          args: { name: "name", generators: "" },
         },
         {
           name: "-foreground",
@@ -780,7 +829,8 @@ const completionSpec: Fig.Spec = {
         {
           name: "-format",
           description: "",
-          args: { name: "string", description: "" },
+          // TODO: needs a custom generator
+          args: { name: "string", generators: "" },
         },
         {
           name: "-frame",
@@ -789,7 +839,7 @@ const completionSpec: Fig.Spec = {
         {
           name: "-function",
           description: "",
-          args: { name: "function", description: "" },
+          args: { name: "function", generators: listGenerator("Function") },
         },
         {
           name: "-fuzz",
@@ -819,7 +869,7 @@ const completionSpec: Fig.Spec = {
         {
           name: "-gravity",
           description: "",
-          args: { name: "type", description: "" },
+          args: { name: "type", generators: listGenerator("Gravity") },
         },
         {
           name: "-grayscale",
@@ -863,36 +913,36 @@ const completionSpec: Fig.Spec = {
         {
           name: "-illuminant",
           description: "",
-          args: { name: "method", description: "" },
+          args: { name: "method", generators: listGenerator("Illuminant") },
         },
         {
           name: "-immutable",
-          description: "",
+          description: "make image immutable.",
         },
         {
           name: "-implode",
-          description: "",
+          description: "implode image pixels about the center.",
           args: { name: "factor", description: "" },
         },
         {
           name: "-insert",
-          description: "",
+          description: "Insert the last image into the image sequence.",
           args: { name: "index", description: "" },
         },
         {
           name: "-intensity",
           description: "",
-          args: { name: "method", description: "" },
+          args: { name: "method", generators: listGenerator("Intensity") },
         },
         {
           name: "-intent",
           description: "",
-          args: { name: "type", description: "" },
+          args: { name: "type", generators: listGenerator("Intent") },
         },
         {
           name: "-interlace",
           description: "",
-          args: { name: "type", description: "" },
+          args: { name: "type", generators: listGenerator("Interlace") },
         },
         {
           name: "-interline-spacing",
@@ -902,7 +952,7 @@ const completionSpec: Fig.Spec = {
         {
           name: "-interpolate",
           description: "",
-          args: { name: "type", description: "" },
+          args: { name: "type", generators: listGenerator("interpolate") },
         },
         {
           name: "-interpolative-resize",
@@ -942,7 +992,7 @@ const completionSpec: Fig.Spec = {
         {
           name: "-layers",
           description: "",
-          args: { name: "method", description: "" },
+          args: { name: "method", generators: listGenerator("Layers") },
         },
         {
           name: "-level",
@@ -957,7 +1007,8 @@ const completionSpec: Fig.Spec = {
         {
           name: "-limit",
           description: "",
-          args: { name: "type", description: "" },
+          // TODO: needs custom generator
+          args: { name: "type", generators: "" },
         },
         {
           name: "-linear-stretch",
@@ -976,7 +1027,7 @@ const completionSpec: Fig.Spec = {
         {
           name: "-list",
           description: "",
-          args: { name: "type", description: "" },
+          args: { name: "type", generators: listGenerator("List") },
         },
         {
           name: "-log",
@@ -1024,7 +1075,7 @@ const completionSpec: Fig.Spec = {
         {
           name: "-metric",
           description: "",
-          args: { name: "type", description: "" },
+          args: { name: "type", generators: listGenerator("Metric") },
         },
         {
           name: "-minimum",
@@ -1033,7 +1084,7 @@ const completionSpec: Fig.Spec = {
         {
           name: "-mode",
           description: "",
-          args: { name: "geometry", description: "" },
+          args: { name: "value", generators: listGenerator("Mode") },
         },
         {
           name: "-modulate",
@@ -1085,6 +1136,11 @@ const completionSpec: Fig.Spec = {
           args: { name: "geometry", description: "" },
         },
         {
+          name: "+noise",
+          description: "",
+          args: { name: "type", generators: listGenerator("Noise") },
+        },
+        {
           name: "-normalize",
           description: "",
         },
@@ -1096,6 +1152,7 @@ const completionSpec: Fig.Spec = {
         {
           name: "-ordered-dither",
           description: "",
+          // TODO: custom generator since list output is irregular
           args: { name: "threshold_map", description: "" },
         },
         {
@@ -1653,7 +1710,10 @@ const completionSpec: Fig.Spec = {
     },
   ],
   // Only uncomment if magick takes an argument
-  // args: {}
+  args: {
+    name: "tool",
+    generators: listGenerator("Tool"),
+  },
 };
 
 export default completionSpec;
